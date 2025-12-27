@@ -7,12 +7,12 @@ from clip_encoder import CLIPEncoder
 from prompt_ensemble import build_prompts
 from multiscale_features import extract_multiscale_features
 
-# ================= CONFIG =================
+
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 DATASET = r"D:\File Downloads\BIG_DATA_LYTHUYET\VisA_20220922"
 MAX_IMAGES = 1   # demo đúng 1 ảnh
-# ==========================================
+
 
 encoder = CLIPEncoder(DEVICE)
 clip_model = encoder.model
@@ -28,7 +28,7 @@ for obj in os.listdir(DATASET):
 
     print(f"\nObject: {obj}")
 
-    # -------- TEXT ENCODER --------
+   
     prompts = build_prompts(obj)
     text_feats = encoder.encode_text(prompts)     # [K, D]
     text_feats = F.normalize(text_feats, dim=-1)
@@ -42,13 +42,13 @@ for obj in os.listdir(DATASET):
             if not img_name.lower().endswith((".png", ".jpg", ".jpeg")):
                 continue
 
-            # -------- LOAD IMAGE --------
+            
             img_path = os.path.join(defect_dir, img_name)
             image = encoder.preprocess_image(
                 Image.open(img_path).convert("RGB")
             )
 
-            # -------- MULTI-SCALE PATCH FEATURES --------
+            
             patch_maps = extract_multiscale_features(image, clip_model)
 
             for scale_id, patch_map in enumerate(patch_maps):
@@ -79,3 +79,4 @@ for obj in os.listdir(DATASET):
         break
 
 print("\n=== DONE ===")
+

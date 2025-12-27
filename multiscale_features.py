@@ -12,11 +12,11 @@ def extract_multiscale_features(image, model, layers=(6, 12, 18, 24)):
         outputs = model.visual.forward_intermediates(
             image,
             layers=layers,
-            return_prefix_tokens=False,   # bỏ CLS
+            return_prefix_tokens=False,   
             norm=False
         )
 
-    feats = outputs["intermediates"]   # list of [B, HW, C]
+    feats = outputs["intermediates"]   
 
     patch_maps = []
 
@@ -25,9 +25,10 @@ def extract_multiscale_features(image, model, layers=(6, 12, 18, 24)):
         B, HW, C = tokens.shape
         H = W = int(math.sqrt(HW))
 
-        tokens = tokens.transpose(1, 2)      # [B, C, HW]
+        tokens = tokens.transpose(1, 2)      
         patch_map = tokens.reshape(B, C, H, W)
 
         patch_maps.append(patch_map)
 
     return patch_maps
+
